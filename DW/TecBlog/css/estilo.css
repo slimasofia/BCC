@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  font-family: 'Roboto';
+  font-size: 1em;
+  background: #e6e6e6;
+}
+
+/*Layout */
+header {
+  background-color: #f7b600;
+  padding: 15px;
+  text-align: center;
+}
+
+#area-logo, nav {
+  padding: 10px;
+}
+
+main{
+  width: 920px;
+  margin: 0 auto; 
+}
+
+section #text{
+  width: 98%;
+  text-align: justify;
+  margin: 1%;
+  float: none; 
+  background-color: initial; 
+  margin-bottom: initial;
+  padding: initial; 
+}
+
+aside{
+  background: orange;
+}
+
+section{
+  width: 660px;
+  float: left;
+  background-color: white;
+  margin-bottom: 20px;
+  padding: 20px;
+
+}
+
+
+footer {
+  clear: both;
+  text-align: center;
+  padding: 15px;
+  background: #CCC;
+}
+
+#leia{
+  color: orange;
+  padding: 0px;
+    }
+
+
+/*Formatação do menu */
+a{
+  text-decoration: none;
+}
+a:link, a:visited{
+  color: #FFF;
+  padding: 8px 12px;
+}
+
+a:hover{
+  color: #f7b600;
+  background: #FFF;
+
+}
+
+/*Formatação em geral */
+h1{
+  color: #4e4e4e;
+  font-size: 2.5em;
+  }
+
+.branco {
+  color: white;
+}
+
+
+h2{
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+h3 {
+  text-align: center;
+}
+
+
+form {
+  width: 75%;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="text"], select {
+  width: 100%;
+  padding: 10px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+ 
+}
+
+h3 {
+  text-align: center;
+  margin: 10px;
+}
+
+/*página eletronicos*/
+
+table {
+  width: 100%;
+
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+
+th {
+  background-color: #f8b809;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
