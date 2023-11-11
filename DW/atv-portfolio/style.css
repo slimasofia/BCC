@@ -1,0 +1,206 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+#container {
+    float: right;
+    width: 50%;
+    margin-right: 50px;
+}
+
+#about {
+    margin-left: 50px;
+}
+
+nav {
+    float: right;
+}
+
+p {
+    font-size: 30px;
+    color: #52504e
+}
+
+#about h1 {
+    font-weight: 900;
+    font-size: 75px;
+    color: #FF8C00;
+    text-align: justify;
+}
+
+
+header h2 {
+    font-weight: 900;
+    font-size: 60px;
+    color: #FF8C00;
+    text-align: center;
+}
+
+header a {
+    color: #000000;
+    letter-spacing: 3px;
+    text-decoration: none;
+    margin-right: 30px;
+    font-size: 20px;
+}
+
+#skills {
+    height: 350px;
+    width: 100%;
+    text-align: center;
+    margin-top: 10%;
+    padding-top: 40px;
+    background-color: #f7f7f7;
+}
+
+table {
+    display: inline;
+}
+
+th,
+td {
+    border: 1px solid #FF8C00;
+    text-align: center;
+    width: 20%;
+}
+
+#skills caption {
+    border: 1px solid #FF8C00;
+}
+
+
+#skills img {
+    width: 30px;
+    float: right;
+}
+
+#projects h1 {
+    text-align: center;
+    margin-top: 10%;
+    font-size: xx-large;
+    color: #FF8C00;
+}
+
+#projects {
+    text-align: center;
+    margin-top: -5%;
+
+}
+
+#projectCard {
+    text-align: justify;
+    display: inline-block;
+    width: 40%;
+    height: 500px;
+    margin: 10px;
+    border: 2px solid #FF8C00;
+    border-radius: 10px;
+    vertical-align: top;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#projectCard a {
+    display: block;
+    width: 50%;
+    margin-top: 20px;
+}
+
+#projects iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+}
+
+#projectCard a {
+    border: 2px solid #FF8C00;
+    border-radius: 10px;
+    background-color: #FF8C00;
+
+}
+
+footer {
+    background-color: #f7f7f7;
+    height: 350px;
+}
+
+footer h1,
+h5 {
+    background-color: #f7f7f7;
+    color: #000000;
+    font-size: larger;
+}
+
+footer h1 {
+    font-size: xx-large;
+}
+
+footer h5 {
+    text-align: center;
+    padding-top: 2%;
+}
+
+form {
+    background-color: #f7f7f7;
+    float: right;
+    width: 50%;
+    margin-right: 10%;
+}
+
+input,
+textarea {
+    border: 2px solid #FF8C00;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 90%;
+    padding: 10px;
+    background-color: #fff;
+}
+
+textarea {
+    height: 100px;
+}
+
+footer button {
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    width: 20%;
+    display: block;
+    margin-top: 10px;
+    background-color: #FF8C00;
+}
+
+#redesSociais {
+    margin-left: 10%;
+    background-color: #f7f7f7;
+}
+
+#redesSociais ul,
+#redesSociais a,
+#redesSociais h4 {
+    background-color: #f7f7f7;
+    color: #FF8C00;
+}
+
+h4 {
+    display: inline;
+    padding-left: 10px;
+}
+
+#img-redes {
+    width: 50px;
+    padding-top: 10px;
+    vertical-align: middle;
+    margin-right: 10px;
+    background-color: #f7f7f7;
+}
+
+#redesSociais li {
+    list-style: none;
+    padding-top: 5px;
+    display: flex;
+    background-color: #f7f7f7;
+}
