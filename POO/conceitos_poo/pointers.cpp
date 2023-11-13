@@ -1,28 +1,26 @@
 #include <iostream>
 using namespace std;
 
-class pointers {
-private:
-    int* x; // um ponteiro para um inteiro (armazena o endereço do inteiro)
-    double *array; // um ponteiro para armazenar o enderço de um array de doubles   
+// utilizado para retornar múltiplos valores,
+// acessar elementos de um array,
+// alocar memória dinamicamente
 
-public:
-    pointers();
-    ~pointers();
-};
-
-pointers::pointers() {
-    x = new int; // aloca memória para esse inteiro
-    array = new double[5];
-}
-
-pointers::~pointers() {
-    delete x;
-    delete[] array;
-}
+//um ponteiro armazena um endereço de memória
 
 int main(){
-    int valor = 10;
-    array[0] = valor;
-    cout << "array[0] = 10 " << array[0] << endl;
+    int n = 10;
+    int *ptr;
+    ptr = &n; 
+    *ptr = 5; // manipulando o valor da variável n através do ponteiro. 'no enderço apontado por ptr adicione o valor 5'
+
+    int arr[] = {10, 20, 30, 40};
+    cout << arr[2] << endl;
+    cout << *(arr + 2) << endl; // essa expressão é equivalente a primeira, mas utiliza a 
+                                //aritmética de ponteiros: (arr + 2) indica a posição do 
+                                //terceiro elemento e '*' é usado para acessar o valor nesse endereço.
+
+    cout << "ptr: endereço da variável n na memória: " << ptr << endl; // retorna o endereço da variável n na memória, que está armazenada em ptr
+    cout << "&n: endereço de n: " << &n << endl; // retorna o endereço da variável n na memória
+    cout << "valor de n: " << n << endl;
+    return 0;
 }
