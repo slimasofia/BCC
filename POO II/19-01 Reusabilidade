@@ -1,0 +1,26 @@
+JOHNSON, 1988
+
+2. POO
+
+*Herança:
+ Novas classes podem ADICIONAR e REDEFINIR operações, mas NÃO podem excluir operações herdadas.
+
+3. Reuso de Software
+-Desenvolver sistemas é caro, e mantê-los é ainda mais caro, Uma forma de reuso é melhorar sistemas.
+A manutenção é uma forma de reuso.
+
+-Manutenção de Software
+
+Corretiva --> Diagnosticar e corrigir erros
+Adaptativa --> Adaptar sistema a novo hardware
+Perfectiva --> Melhorar desempenho e manutenibilidade
+
+-Características da Programação Orientada a Objetos favorecem a manutenção!
+
+* Modularidade --> Faciita a compreensão do efeito de mudanças no sistema.
+
+* Polimorfismo --> Reduz a quantidade de código a ser compreendido.
+
+* Herança --> Permitr criar novos códigos sem afetar os antigos.
+	
+	
