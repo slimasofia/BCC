@@ -16,6 +16,7 @@ int verificaPrimo(int n){
 }
 
 int main(){
+   int n_gerados = 0;
     
     int c = 0;
     srand(time(NULL));
@@ -24,10 +25,11 @@ int main(){
         int n = rand() % 100;
 
         if (verificaPrimo(n)){
-            printf("%d\n", n);
             c++;
-        }       
+        }
+    n_gerados++;
     }
+    printf("Quantidade de números gerados até encontrar 25 números primos: %d\n", n_gerados);
 
     return 0;
 }
