@@ -1,0 +1,15 @@
+a) O valor mostrado na tela será 10.
+    A variável lamp2 é  atribuída com a mesma referência
+    que lamp1, então apontam para o mesmo objeto Lampada.
+    Assim, a condição estabelecida é verdadeira e o bloco if é executado,
+    porém como o incremento só acontece depois que o valor de i foi
+    avaliado, é exibido o valor original, que é 10.
+
+b) Nada é mostrado na tela, porque  a condição de igualdade
+    não é atendida, já que lamp1 e lamp2 são instâncias diferentes
+    da classe Lampada.
+
+c) O valor é 10.
+
+d) O valor é 10.
+
