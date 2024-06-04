@@ -1,0 +1,17 @@
+a) O valor mostrado na tela será 10. A variável lamp2 é  atribuída com 
+a mesma referência que lamp1, assim, a condição estabelecida é verdadeira
+e o bloco if é executado, porém como o incremento só acontece depois que
+o valor de i foi avaliado, é exibido o valor original, que é 10.
+
+b) Nada é mostrado na tela, porque  a condição de igualdade não é 
+atendida, já que lamp1 e lamp2 são instâncias diferentes da classe Lampada.
+
+c) O valor é 11.
+d) O valor é 10.
+
+e) No código da esquerda: já que lamp1 e lamp2 possuem a mesma referência, 
+ao alterar o tipo da lamp1 para “halógena”, o tipo de lamp2 também passará 
+a ser “halógena”. 
+No código da direita: A mudança de tipo de lamp1 não afetará lamp2 por serem
+instâncias diferentes, logo, quando lamp2.mostrarInformaçõesGerais() for chamada,
+o tipo de lamp2 ainda será “LED”.

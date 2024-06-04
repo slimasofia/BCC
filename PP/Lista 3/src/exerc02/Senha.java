@@ -1,52 +1,60 @@
 package exerc02;
-import java.util.Scanner;
 
 public class Senha {
-    private final String senhaCorreta = "123";
+    private String senha;
     private int tentativas = 0;
-    private boolean bloq;
+    private boolean bloq = false;
 
-    public void entraSenha() {
-        Scanner scan = new Scanner(System.in);
+    public Senha(String senhaInicial) {
+        this.senha = senhaInicial;
+    }
 
-        while (tentativas < 3) {
-            System.out.println("Digite a senha: ");
-            String senha = scan.next();
+    private boolean verificaSenha(String s) {
+        return senha.equals(s);
+    }
 
-            if (senha.equals(senhaCorreta)) {
-                System.out.print("Senha correta.");
-                break;
+    public boolean estaBloqueada() {
+        return bloq;
+    }
+
+    public boolean entraSenha(String s) {
+        if (bloq) {
+            System.out.println("A senha está bloqueada.");
+            return false;
+        }
+
+        if (verificaSenha(s)) {
+            System.out.println("Senha correta.");
+            tentativas = 0;
+            return true;
+        } else {
+            tentativas++;
+            if (tentativas < 3) {
+                System.out.println("Senha incorreta. Restam " + (3 - tentativas) + " tentativas.");
             } else {
+                System.out.println("Senha incorreta. Você atingiu o limite de tentativas.");
+                bloq = true;
+            }
+            return false;
+        }
+    }
+
+    public void trocaSenha(String senhaAntiga, String senhaNova) {
+        if (estaBloqueada()) {
+            System.out.println("A senha está bloqueada, não é possível alterá-la.");
+        } else {
+            if (entraSenha(senhaAntiga)) {
+                senha = senhaNova;
+                tentativas = 0;
+                System.out.println("Senha alterada com sucesso.");
+            } else{
+                System.out.println("Senha antiga incorreta. Não foi possível alterar a senha.");
                 tentativas++;
-                if (tentativas < 3) {
-                    System.out.println("Senha incorreta. Restam " + (3 - tentativas) + " tentativas.");
-                } else {
-                    System.out.println("Senha incorreta. Você atingiu o limite de tentativas.");
+                if (tentativas >= 3) {
                     bloq = true;
-                    break;
+                    System.out.println("Você atingiu o limite de tentativas e a senha foi bloqueada.");
                 }
             }
         }
-        scan.close();
     }
-
-////    public void trocaSenha(String senha, String senhaNova){
-////        if (estaBloqueada()){
-////            System.out.println("A senha está bloqueada, não é possível alterá-la.");
-////        } else {
-////            entraSenha();
-////        }
-////    }
-//
-//
-//    public boolean estaBloqueada(){
-//        return bloq;
-//    }
-//
-//
-////    public static void trocaSenha(){
-////        Scanner scan = new Scanner(System.in);
-////        System.out.println("Deseja trocar a senha? S/N");
-////
-////    }
 }
