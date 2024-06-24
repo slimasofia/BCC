@@ -1,9 +1,8 @@
 import Data.Char
 
 -- 1
-calculaArea raio =  pi * raio * raio
---testando com let:
---let raio = 8 in raio * raio * pi
+calculaArea r =  pi * r^2
+
 
 -- 2
 classificaTri x y z
@@ -30,7 +29,6 @@ menor x y z
     | y <= x && y <= z = y
     | otherwise        = z
 
-
 maior x y z
     | x >= y && x >= z = x
     | y >= x && y >= z = y
@@ -38,7 +36,7 @@ maior x y z
 
 
 -- 6
---xor x y = (x /= 0 && y == 0) || (x == 0 && y /= 0)
+xor x y = (x || y) && not (x && y)
 
 -- 7
 clonaNumeros x = concatMap (\x -> [x, x]) x   -- \x -> [x, x] recebe um elemento x e retorna uma lists com ele duplicado 
@@ -64,7 +62,6 @@ substituiVogais :: [Char] -> [Char]
 vogalMin x = x `elem` "aeiou"
 substituiVogais palavra = map (\x -> if vogalMin x then toUpper x else x) palavra
 
-
 -- 14
 acrescentaString lista = map (\x -> x ++ " Friboi") lista
 
@@ -80,3 +77,10 @@ filtraLista [] = []
 filtraLista (x:xs)
     | pertence x xs = filtraLista xs  
     | otherwise     = x : filtraLista xs 
+
+
+-- 17
+nPrimeiros n lista = take n lista 
+
+-- 18
+multiplosTres = [x | x <- [0..300], x `mod` 3 == 0]
