@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/slima/Documentos/2024-2/Estrutura de Dados II",
-      "program": "/home/slima/Documentos/2024-2/Estrutura de Dados II/build/Debug/outDebug",
+      "cwd": "/home/slima/BCC/ED II",
+      "program": "/home/slima/BCC/ED II/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
