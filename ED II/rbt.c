@@ -146,9 +146,6 @@ No* insere(RedBlackTree *tree, int valor) {
         } else {
             p->dir = no;
         }
-      
-      no->dir = NULL;
-      no->esq = no->dir;
     
         // Corrigir a árvore após a inserção
         arrumar(tree, no);
@@ -195,39 +192,34 @@ void emOrdem(No *raiz) {
 }
 
 
-
 int main(){
-    RedBlackTree tree;
-    tree.raiz = NULL;
+    RedBlackTree *tree = inicializar();
+    //RedBlackTree tree;
+    //tree.raiz = NULL;
     
-    int valor;
-    
-    printf("Digite os valores: ");
+    int n;
         for (int i = 0; i < 13; i++) {
-            scanf("%d", &valor);
-            insere(&tree, valor);
+            scanf("%d", &n);
+            insere(tree, n);
     }
 
     printf("Percurso em ordem: ");
-    emOrdem(tree.raiz);
+    emOrdem(tree->raiz);
     printf("\n");
 
     // Exibindo a raiz
-    printf("Raiz: %d\n", tree.raiz->valor);
+    printf("Raiz: %d\n", tree->raiz->valor);
 
     // Exibindo a altura da árvore
-    printf("Altura: %d\n", altura(tree.raiz));
+    printf("Altura: %d\n", altura(tree->raiz));
 
 
     int contaVermelho = 0, contaPreto = 0;
-    contaCor(tree.raiz, &contaVermelho, &contaPreto);
+    contaCor(tree->raiz, &contaVermelho, &contaPreto);
     printf("Quantidade de nós vermelhos: %d\n", contaVermelho);
     printf("Quantidade de nós pretos: %d\n", contaPreto);
     // Exibindo a quantidade de nós vermelhos
- 
-
-  
-    
+     
     return 0;
 }
 
