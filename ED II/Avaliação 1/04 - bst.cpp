@@ -1,3 +1,5 @@
+//EXERCÍCIO 1195 - BEECROWD
+
 #include <iostream>
 using namespace std;
 
@@ -59,21 +61,23 @@ void pre(No* raiz){
     }
 }
 
-// Função que executa o percurso em Em ordem: o pai é visitado entre os filhos, então o percurso é Esquerda-Pai-Direta.
+// Função que executa o percurso em Em ordem: 
+//o pai é visitado entre os filhos, então o percurso é Esquerda-Pai-Direta.
 void in(No* raiz){
     if (raiz != NULL){
-        in(raiz->esq);
-        cout << raiz->valor << " ";
-        in(raiz->dir);
+        in(raiz->esq);              // a função é chamda recursivamente, processando os valores à esquerda da raiz
+        cout << raiz->valor << " "; // o valor da raiz será impresso seguido por um espaço
+        in(raiz->dir);              // a função é chamda recursivamente, agora processando os valores à direita da raiz
     }
 }
 
-// Função que executa o percurso em Pós-ordem: o pai é visitado depois dos filhos, então o percurso é Esquerda-Direta-Pai.
+// Função que executa o percurso em Pós-ordem: 
+// o pai é visitado depois dos filhos, então o percurso é Esquerda-Direta-Pai.
 void post(No* raiz){
     if (raiz != NULL){
-        post(raiz->esq);
-        post(raiz->dir);
-        cout << raiz->valor << " ";
+        post(raiz->esq);            // a função é chamda recursivamente processando os valores à esquerda da raiz
+        post(raiz->dir);            // a função é chamda recursivamente, agora processando os valores à direita da raiz
+        cout << raiz->valor << " "; // o valor da raiz será impresso seguido por um espaço
     }
 }
 
