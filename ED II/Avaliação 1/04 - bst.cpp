@@ -1,4 +1,6 @@
-// EXERCÍCIO 1195 - BEECROWD
+// 1195 - BEECROWD
+// link pro exercício: https://www.beecrowd.com.br/repository/UOJ_1195.html?origem=1
+
 #include <iostream>
 #include <sstream> 
 #include <vector> 
