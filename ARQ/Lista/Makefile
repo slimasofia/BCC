@@ -1,5 +1,5 @@
 .PHONY: clean image
-SOURCE = soma
+SOURCE = concatenar
 
 all: image
 
