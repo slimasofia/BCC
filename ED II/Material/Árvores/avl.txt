@@ -1,0 +1,90 @@
+//========================== ÁRVORE AVL ============================//
+
+Arvores AVL - Síntese & Exemplos Resolvidos: https://www.youtube.com/watch?v=qkuyKpJBLsc
+
+relembrando:
+
+    NÍVEL
+    o nível da raiz é N = 0
+    o nível de qualquer outro nó é igual ao nível de seu pai P mais o valor 1
+        Nf = Np + 1
+    
+    ALTURA
+    Altura da árvore: Número de nós visitados (arestas percorridas) da raiz até o nó folha mais distante
+    A altura de um nó folha é igual a 0
+    Na AVL, a altura de um nó inexistente é igual a -1
+
+    BST
+    Nós menores são inseridos à esquerda e nós maiores à direita
+    Problema: a árvore pode ficar desbalanceada, quase como uma lista encadeada
+    desbalanceada se: os fatores de balanceamento forem maiores ou igual a 2 em módulo  
+    Como balancear? Utilizar as regras de AVL
+
+------------------------------------------------------------------------
+
+AVL
+    Se a inserção que provocou o desbalanceamento da árvore foi feita:
+    na subárvore direita do filho à direita: rotação simples à esquerda
+    na subárvore esquerda do filho à esquerda: rotação simples à direita
+    na subárvore direita do filho à esquerda: rotação dupla esquerda-direita
+    na subárvore esquerda do filho à direita: rotação dupla direita-esquerda
+
+    O faotr de balanceamento de um nó é dado por:
+    Fator de balanceamento = Altura(filhoEsquerda) - Altura(filhoDireita)
+
+
+-------------------------------------------------
+
+definir a estrutura
+    contém inteiros para o valor e para altura
+    definir ponteiros para esquerda e para a direita
+
+função cria no(valor)
+    aloca o nó
+    seta o valor
+    setar os ponteiros como null
+    e a altura como 0
+    retornar o nó
+
+
+função alturaNo
+    se o no for null a altura é -1
+    se não retorna altura do n
+
+
+função para atualizar a altura do nó
+
+
+função para calcular o faotr de balanceamento do nó
+    se o nó for null o fb é -1
+    se não, calcular fb de acordo ocm as regras
+
+
+função para rotacionar à direita
+    recebe como parâmetro um nó y que está desbalanceado
+
+    x se torna raiz da subárvore à esquerda de y
+    colcoa t2 como subárvore direita de x
+    ----
+    a subárvore a direita de x agora é o próprio y 
+    a subárvore esquerda de y agora é t2 (antiga subárvore à direita de x)
+
+    atualizar as alturas de x e de y 
+        ver qual é a maior altura dentre a altura do nó esquerdo e a altura do nó direito e somar 1
+    
+    retornar a nova raiz
+
+função inserir
+    insere como na BST
+    atualiza altura do nó atual (raiz)
+    verificar o fb
+
+
+
+
+    y é o nó desbalanceado e que precisa ser rotacionado.
+    x é o filho esquerdo de y.
+    T1 é a subárvore esquerda de x.
+    T2 é a subárvore direita de x.
+
+

@@ -1,0 +1,38 @@
+Grafos
+
+Formas de representação:
+- Definição de conjuntos, G = (V, E)
+- Gráfica
+- Listas de arestas
+    * Lista não ordenada de arestas
+    * Implementação simples
+    * Operação de busca de arestas não é eficiente
+    * A localização de todas as arestas incidentes a um vértice é ineficiente
+    * Implementado com lista(s).
+    * Ver fig 2.1 do livro. Contém erro. Qual é o erro?
+- Listas de adjacência
+    * Coleção não-ordenada iterável V de vértices.
+    * Cada vértice mantém uma lista não ordenada de todas as suas arestas incidentes.
+        - Isto permite que a determinação das arestas incidentes a um vértice seja mais eficiente.
+    * Implementado com lista(s).
+- Mapas de adjacência
+    * Semelhante à listas de adjacência, mas ao invés de uma lista, cada vértice mantém um mapa de arestas.
+    * As chaves do mapa são os vértices adjacentes ao vértice considerado.
+    * Permite uma maior eficiência ao acesso à uma determinada aresta.
+    * Implementado com hash maps: o vértice incidente oposto de cada aresta é a chave do par chave/valor do mapa.
+    * Vantagem sobre as listas de adjacência é que a operação de busca de uma aresta com base em seus vértices ocorre em tempo constante O(1).
+- Matrizes de adjacência
+    * Matriz de tamanho n x n.
+    * Preenchida com zero nas posições em que o elemento da linha não tem ligação com o elemento da coluna.
+    * Preenchida com um nas posições em que o elemento da linha tem ligação com o elemento da coluna, ou seja, quando há uma aresta.
+    * Estrutura fácil de implementar.
+    * Acesso a arestas em tempo constante.
+    * Em grafos não dirigidos, a matriz é simétrica.
+
+As duas primeiras são úteis para estudo teórico de gráfos, ao passo que as quatro últimas são mais adequadas para implementação computacional.
+
+Código representacao.c mostra um exemplo contendo as quatro representações.
+    * A partir desse código, remova a aresta (1,2) em todas as representações e as imprima novamente.
+
+Referência
+GOMES, Paulo C. R. Grafos. Conceitos Fundamentais, Algoritmos e Aplicações. IFC: Blumenau. 2022.

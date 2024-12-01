@@ -1,0 +1,48 @@
+Sofia Lima dos Santos
+
+BUSCA EM PROFUNDIDADE (DFS)
+
+Fazer buscas em um grafo significa seguir suas arestas sistematicamente e modo a visitar seus vértices
+
+Começa de um nó e vai o mais fundo possível.
+Paramos quando encontramos o que procuramos ou quando visitamos todos os vértices e não encontramos.
+As arestas são exploradas a partir do vértices v mais recentemente descoberto que ainda tem arestas não exploradas dele
+quando todas as arestas de v são exploradas a busca volta ao vértice anterior a v (backtracking) para seguir arestas ainda não exploradas.
+
+definir um nó inicial
+enquanto esse não for um nó objetivo ou final (nó cuja adjacência já tenha sido visitada)
+escolha um de seus adjacentes ainda não visitados
+visite-o
+se o nó final não objetivo
+	volte ao pai deste 
+	se houver pai, repita, senão
+	escolha outro nó inicial
+	
+**Usa lista de adjacência
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUSCA EM LARGURA (BFS)
+
+Primeiro visita todos os adjacentes de um nó, para então visitar os adjacentes dos adjacentes
+"em camadas"
+
+dado um nó inicial s, a busca determina a distância (n arestas) de cada vértice atingível a do grafo a s
+menor distância em número de arestas!
+
+os nós a serem visitados são colocados em uma fila (inicialmente contém só o nó inicial)
+tira o elemento da fila, olho as adjacências e coloca elas na fila
+enfileira filhos, netos, etc
+continua até achar o nó alvo da busca ou a fila ficar vazia
+
+definir nó inicial, marcar como explorado
+enfileirar ele
+enquanto a fila não estiver vazia:
+	remova o primeiro nó da fila, u
+	para cada vizinho v de u:
+		Se v não explorado:
+			Marque como explorado
+			coloque v no fim da fila
+			
+repita de outro nó inicial, se houver
+
+**Usa lista de adjacência

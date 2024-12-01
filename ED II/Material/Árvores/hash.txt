@@ -1,0 +1,147 @@
+//============== HASH ================//
+
+.definir tamanho da tabela e tamanho da palavra
+
+.definir uma estrutura Node (lista encadeada para o tratamento de colisões)
+    definir chave e valor passando o tamanho maximo da palavra
+    definir ponteiro prox dessa estrutura
+
+.definir a tabela hash como um array de ponteiros para Node passando o tamanho da tabela
+
+.definir a função de hash (int), que transforma uma string (chave) em um indice numérico entre 0 e TAM-1
+    variáveis para o for
+    for que percorre cada caractere da chave, o convertendo em um int (correspondente à tabela ASCII) e acumulando em uma variável
+    retorna essa variável fazendo ela caber na tabela
+
+.definir função insere (void)
+    tem como argumentos os ponteiros para chave e valor
+    calcula um index através da função de hash
+    aloca memória para um novo nó
+    através da função strcpy, copia a chave e valor para o novo nó
+    o ponteiro prox do novo nó aponta para null 
+        se o index da tabela calculado for null insere no indice o novo nó
+        se não
+            criar um ponteiro temporário da estrtura Node para percorrer a lista (ele começa pelo primeiro nó na posição "index")
+            enquanto 
+                temp não apontar para uma posição vazia, temp irá apontando para o próximo
+            adiciona o novo nó ao final da lista (o campo próximo do último nó para o novo nó)
+
+
+.definir função busca
+    //======== o que está armazenado no nó está no ponteiro temp ======//
+    (chave como argumento)
+    calcula um index através da função de hash
+    criar um ponteiro temporário da estrtura Node (ele começa pelo primeiro nó na posição "index")
+    
+    //======== repete até encontrar a chave ou chegar ao fim da lista. ======//
+    enquanto temp não for null
+        se
+            [comparar a chave armazenada no nó com a chave passada no argumento através da função strcmp] == 0
+                retornar o valor armazenado no nó
+        avançar para o próximo nó da lista
+    retorna uma msg de erro se não encontrar a chave
+
+
+.int main()
+    inicializar todas as posições da tabela como null
+    inserir valores na tabela
+    print pra testar a busca
+====================================================================================================
+
+IMPLEMENTAÇÃO C++
+
+hash.cpp:
+
+#include <iostream>
+#include <string>
+#include "hash.h"
+using namespace std;
+
+HashTable::HashTable() {
+    for(int i = 0; i < tableSize; i++){
+        Table[i] = new item;
+        Table[i]->name = "empty";
+        Table[i]->drink = "empty";
+        Table[i]->next = NULL;
+    }   
+}
+
+int HashTable::Hash(string key){
+
+    int hash = 0;
+    int index;
+
+    index = key.length();
+
+    for(int i = 0; i < key.length(); i++){
+
+        hash = hash + (int)key[i];
+    }
+
+    index = hash % tableSize; // ex: hash é a soma de todas as letras, se hash é 402 então é 402/100 = 4,02 o index é 2; o index é a casa decimal
+
+    return index;
+}
+
+void HashTable::AddItem(string name, string drink){
+    int index = Hash(name);
+    if(Table[index]->name == "empty"){
+        Table[index]->name = name;
+        Table[index]->drink = drink;
+    }
+
+    else{
+        item* Ptr = Table[index];
+        item* n = new item;
+        n->name  = name;
+        n->drink = drink;
+        n->next = NULL;
+    }
+}
+
+hash.h:
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
+
+class HashTable{
+    private:
+        static const int tableSize = 10; // permite definir o tamanho dentro da definição da classe
+        struct item{ // algum obj que contém um nome, bebida
+            string name;
+            string drink;
+            item* next;
+        };
+
+        item* Table[tableSize];
+
+
+    public:
+        HashTable();
+        int Hash(string key);
+        void AddItem(string name, string drink);
+};
+
+
+#endif
+
+
+main.cpp:
+
+#include <iostream>
+#include "hash.h"
+using namespace std;
+
+int main(){
+
+    int index;
+    HashTable hashObj;
+
+    index = hashObj.Hash("Sofia");
+
+    return 0;
+}

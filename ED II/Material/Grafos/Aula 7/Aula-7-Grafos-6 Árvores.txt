@@ -1,0 +1,53 @@
+Árvores e Grafos Valorados
+
+Resumo:
+- Árvores: Estruturas hierárquicas que não possuem ciclos e conectam todos os vértices. Cada aresta representa uma relação de conexão entre dois vértices. Uma árvore com n vértices tem exatamente n-1 arestas.
+- Árvores Geradoras: Subconjuntos de um grafo que incluem todos os vértices, mas sem ciclos, e têm o número mínimo de arestas. Uma árvore geradora de um grafo possui o mesmo número de vértices do grafo original, mas com n-1 arestas.
+- Grafos Valorados: Grafos onde as arestas possuem valores (ou pesos), normalmente usados para representar custos, distâncias ou capacidades.
+- Árvores Geradoras de Custo Mínimo: Entre todas as possíveis árvores geradoras de um grafo valorado, a árvore geradora de custo mínimo é aquela cuja soma dos pesos das arestas é mínima (a menor possível).
+
+Algoritmos de Árvores Geradoras de Custo Mínimo
+
+- Algoritmo de Prim:
+    1. Considere o grafo inicial removendo eventuais laços e arestas paralelas. Quando houver arestas paralelas, deixe somente a de menor custo.
+    2. Escolha um vértice inicial para gerar um novo grafo que conterá a árvore de custo mínimo.
+    3. Insira a aresta de menor custo ao novo grafo, desde que isso não forme um circuito (uma trilha fechada) -- até porque esse grafo é uma árvore.
+    4. Repetir o passo 3 até gerar a árvore de custo mínimo completa, ou seja, até ter um grafo sem ciclos com os N vértices do grafo original e contendo exatamente N-1 arestas.
+
+    Em resumo:
+    - Escolhe um vértice inicial e cresce a árvore adicionando a menor aresta conectando a árvore a um vértice fora dela.
+
+    - A complexidade do algoritmo é O(E log V), onde E é o número de arestas e V o número de vértices.
+    - Esse algoritmo é ideal para grafos densos, onde há muitas arestas em relação ao número de vértices.
+
+Código de exemplo do algoritmo de Prim:
+- Prim.cpp
+- Prim.c
+- Prim.py
+
+- Algoritmo de Kruskal:
+    1. Ordena todas as arestas pelo peso em ordem crescente.
+    2. Adiciona as arestas à árvore geradora, desde que não formem ciclos, até que todos os vértices estejam conectados.
+    3. Complexidade: O(E log E), onde E é o número de arestas. É ideal para grafos esparsos.
+
+    * Para implementar o algoritmo de Kruskal, costuma-se usar os conceitos de conjuntos disjuntos. Motivo:
+        - Cada aresta conecta dois vértices, podendo formar vários subconjuntos de V.
+        - Esses subconjuntos são disjuntos porque, no processo de construção da Árvore Geradora Mínima (MST), busca-se garantir que cada subconjunto represente um componente conectado da árvore sem sobreposição.
+        - Portanto, os conjuntos disjuntos ajudam a garantir que cada vértice esteja em apenas um conjunto, sem ciclos, de modo que, ao adicionar uma nova aresta, ela deve unir vértices que pertençam a diferentes subconjuntos.
+
+Código de exemplo do algoritmo de Kruskall:
+- Kruskal.cpp (OO)
+- Kruskal.c
+- Kruskal.py (OO)
+
+Aplicações Reais:
+- Redes de Computadores: As árvores geradoras de custo mínimo são usadas para minimizar o custo de construção de redes de comunicação, como a internet.
+- Sistemas de Distribuição de Energia: Utilizam árvores geradoras de custo mínimo para otimizar a distribuição de energia elétrica.
+- Planejamento de Rotas: Utilizam árvores para encontrar o caminho mais curto entre várias localidades.
+
+Conclusão:
+- Árvores geradoras de custo mínimo são fundamentais em diversas áreas, com algoritmos eficientes como Prim e Kruskal.
+- Grafos valorados permitem a modelagem de problemas reais, onde o objetivo é minimizar custos ou distâncias.
+
+Referência
+GOMES, Paulo C. R. Grafos. Conceitos Fundamentais, Algoritmos e Aplicações. IFC: Blumenau. 2022.

@@ -1,0 +1,48 @@
+Sofia Lima dos Santos
+
+
+Estrutura de Dados II - Grafos - Representação
+
+(1) mapeamento de cada nó à lista de nós aos quais ele está conectado
+listar os nós e suas conexões
+
+no computador:
+	matrizes de adjacência
+	listas de adjacência
+	
+MATRIZ DE ADJACÊNCIA 
+	n vértices - matriz n x n
+	bits - 1 se tiver aresta ligando o vértice 
+	       0 se não tiver 
+	       (usar o peso no lugar dos bits se houver peso nas arestas)
+
+possível implementação:
+	uma struct grafo que guarda inteiros para o vértice e arestas
+	
+	
+LISTA DE ADJACÊNCIAS
+No computador, pode ser representado como um arranjo de n elementos (nós) com um ponteiro para as listas ligada dos nós ao qual o nó está conectado.
+(tem que saber o número de nós)
+-com peso, mesma cosa (campo pro peso)
+dirigidos, mesma coisa (só será menor)
+
+---------
+
+buscas são mais rápidas com listas de adjacências: dado um nó, já temos uma lista de suas adjacências
+* no caso da matriz temos que varrer a linha correspondente a esse nó, buscando as arestas.
+
+testar a existência de aresta entre dois vértices: é mais rápido com matriz de adjacência (é só buscar na célula Aij)
+
+--------
+em suma:
+matriz de adjacência para: grafos densos, operações como teste de arestas e identificação de predecessores
+lista de adjacência para: grafos esparsos (mais vértice que aresta), operações que tenham como base um caminho de um vértice a outro (ex: busca).
+	
+com grafos mais densos (mais aresta que vértice) a lista ocupa mais memória	
+	v1 ->v2-> v3 -> v4
+	v2-> v1-> v3-> v4-> v5
+	
+
+
+
+

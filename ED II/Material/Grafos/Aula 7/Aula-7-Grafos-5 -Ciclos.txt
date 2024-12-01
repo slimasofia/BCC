@@ -1,0 +1,60 @@
+Grafos Eulerianos e Hamiltonianos
+
+Resumo:
+- Grafos Eulerianos: Referem-se ao problema das pontes de Königsberg, estudado por Euler no século XVIII. Um grafo é Euleriano se contém uma trilha fechada que visita cada aresta exatamente uma vez, formando um Ciclo Euleriano.
+    * Aula-7-Ciclo-euleriano.png
+- Grafos Hamiltonianos: Inspirados no "Jogo Icosiano" de William Rowan Hamilton, onde o objetivo é passar por todos os vértices exatamente uma vez, retornando ao ponto de partida, formando um Ciclo Hamiltoniano.
+    * Figura do Jogo Icosiano na página 13 (99 no PDF) do arquivo do capítulo 5.
+    * Aula-7-Ciclo-hamiltoniano.png
+
+Grafos e Ciclos Eulerianos
+
+Definições e Propriedades:
+- Ciclo Euleriano: Um ciclo que passa por cada aresta do grafo exatamente uma vez e retorna ao ponto de partida.
+- Teorema de Euler: Um grafo é Euleriano se, e somente se, todos os seus vértices tiverem grau par.
+- Grafos Semi-Eulerianos: Possuem exatamente dois vértices de grau ímpar. Nesses grafos, existe um caminho semi-euleriano, ou seja, um caminho que passa por todas as arestas sem formar um ciclo fechado.
+
+Aplicações Reais:
+- Roteamento de Caminhões de Coleta: Problemas de roteamento, como o de coleta de lixo, são aplicações clássicas dos Ciclos Eulerianos. O caminhão deve passar por todas as ruas (arestas) da cidade sem repetir, minimizando o trajeto.
+- Circuitos Elétricos: Em projetos de circuitos elétricos, garantir que uma trilha percorra todos os componentes sem repetir caminhos desnecessários é um problema Euleriano.
+
+Algoritmos para Ciclos Eulerianos:
+1. Algoritmo de Fleury: Caminha pelas arestas, removendo-as após percorrê-las e evitando pontes até que todas as arestas sejam removidas. 
+   - Complexidade: O(|E|²) (ineficiente).
+2. Algoritmo de Hierholzer: Baseado na construção de subciclos eulerianos disjuntos que são unidos até formar um único ciclo Euleriano.
+   - Complexidade: O(E) (linear e eficiente).
+
+Algoritmo-de-Hierholzer.c
+
+Grafos e Ciclos Hamiltonianos
+
+Definições e Propriedades:
+- Ciclo Hamiltoniano: Um ciclo que passa por todos os vértices exatamente uma vez e retorna ao ponto de partida.
+- Teorema de Ore: Se, em um grafo de n vértices, qualquer par de vértices não adjacentes u e v satisfaz grau(u) + grau(v) ≥ n, então o grafo é Hamiltoniano.
+- Diferença para Euleriano: Ao contrário dos grafos Eulerianos, não há uma condição fácil para determinar se um grafo é Hamiltoniano. Isso torna o problema mais desafiador e, em muitos casos, requer tentativas ou aproximações.
+
+Aplicações Reais:
+- Problema do Caixeiro Viajante (TSP - Travelling Salesman Problem)
+    * Um dos problemas mais famosos que usa Ciclos Hamiltonianos.
+    * Um vendedor deve visitar várias cidades (vértices) exatamente uma vez, minimizando a distância percorrida.
+- Problema do Cavalo no Xadrez
+    * Encontrar um passeio válido do cavalo equivale a resolver o problema do caminho hamiltoniano.
+- Sequenciamento de Tarefas
+    * Em planejamento industrial, os Ciclos Hamiltonianos ajudam a determinar a ordem de execução de tarefas que precisam ser realizadas uma única vez, otimizando o tempo.
+
+Exemplo em Python - Verificação de Ciclo Hamiltoniano com Backtracking (retrocesso):
+Verifica-Ciclo-Hamiltoniano.py
+
+Exercícios
+Dado G abaixo, definido por uma matriz de adjacência, responda:
+1) G é hamiltoniano?
+2) G é euleriano?
+
+G = {{0, 1, 0, 1, 0},{1, 0, 1, 1, 1},{0, 1, 0, 0, 1},{1, 1, 0, 0, 0},{0, 1, 1, 0, 0}}
+
+Conclusão
+- Ciclos Eulerianos podem ser detectados facilmente e possuem soluções eficientes, como o Algoritmo de Hierholzer.
+- Ciclos Hamiltonianos são mais desafiadores e exigem abordagens como backtracking ou aproximações, mas têm relevância em problemas práticos, como o Caixeiro Viajante.
+
+Referência
+GOMES, Paulo C. R. Grafos. Conceitos Fundamentais, Algoritmos e Aplicações. IFC: Blumenau. 2022.

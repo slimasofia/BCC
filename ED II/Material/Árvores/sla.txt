@@ -1,0 +1,15 @@
+Implementar Árvores:
+    HASH ok
+    BST  ok
+    AVL
+    B, B+
+    TRIE
+    PATRICIA
+
+Organizar teoria:
+    HASH
+    BST
+    AVL
+    B, B+
+    TRIE
+    PATRICIA

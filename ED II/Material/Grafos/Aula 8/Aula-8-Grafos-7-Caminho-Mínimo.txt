@@ -1,0 +1,42 @@
+Grafos - Caminho Mínimo
+
+O problema do caminho mínimo em grafos valorados consiste em encontrar um caminho com custo total mínimo entre um vértice inicial e um vértice final.
+
+Este tipo de resultado pode ser obtido tanto em grafos dirigidos quanto em grafos não dirigidos, e os algoritmos para isso podem ser aplicados em ambos os tipos de grafos.
+
+O problema de caminhos mínimo em grafos possui diversas aplicações em áreas como redes, rotas e logística.
+
+Custo de um caminho entre u e v: é a soma de pesos das arestas que conectam u a v.
+Por exemplo, se u = 1 e v = 4, e tem-se u->a com peso 4 e a->v com peso 5, o custo desse caminho é 9.
+
+Custo do caminho mínimo: o custo do menor ca minho que conecta u a v. Pegando o mesmo exemplo acima, se houver u->a com peso 4, a->v com peso 5 e u->v com peso 8, o custo do caminho mínimo entre u e v é 8. Se não existir um caminho conectando u a v, diz-se que o custo é infinito.
+
+Problema do Caminho Mínimo: Consiste em encontrar o caminho de menor custo entre dois vértices de um grafo, onde cada aresta possui um peso (custo).
+    
+Para resolver o problema do caminho mínimo, são apresentados dois algoritmos:
+    - Dijkstra
+    - Floyd-Warshall
+
+Algoritmo de Dijkstra
+- Funciona para grafos com pesos não negativos e calcula o menor caminho a partir de um vértice inicial para todos os outros. Constrói uma árvore de caminhos mínimos, expandindo-se a partir do vértice inicial.
+- Ver algoritmo 7.1.
+- Possui complexidade O(E + V log V) se implementado com fila de prioridade e O(V²) se implementado com array.
+
+Códigos:
+Dijkstra.c
+Dijkstra.cpp
+Dijkstra-com-priority-queue.cpp
+Dijkstra.py
+
+Algoritmo de Floyd-Warshall
+- Também chamado de Algoritmo de Floyd, Roy, Roy-Warshall e outras variações.
+- Calcula o caminho mínimo entre todos os pares de vértices em um grafo e é adequado para grafos com pesos negativos (mas sem ciclos negativos). Ele utiliza uma matriz de distâncias, que é atualizada em etapas para refletir os menores custos entre cada par de vértices.
+- Possui complexidade O(V³), onde V é o número de vértices.
+
+Códigos:
+Floyd.c
+Floyd.cpp
+Floyd.py
+
+Referência
+GOMES, Paulo C. R. Grafos. Conceitos Fundamentais, Algoritmos e Aplicações. IFC: Blumenau. 2022.

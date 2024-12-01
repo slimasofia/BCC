@@ -1,0 +1,57 @@
+Grafos
+
+Busca em Grafos
+- A busca em grafos significa percorrer seus vértices através de suas conexões (arestas).  
+- Métodos de busca: em largura e em profundidade.  
+- Esses métodos são essenciais para a construção de outros algoritmos em grafos, como o algoritmo de Dijkstra (para caminhos mínimos) e o algoritmo de Prim (para árvores geradoras de custo mínimo).
+
+Busca em Largura
+- Explora o grafo a partir de um vértice inicial arbitrário.  
+- A busca se expande uniformemente, alcançando primeiro os vértices que estão a uma menor distância do vértice inicial.  
+- Utiliza uma fila para conduzir a ordem de visitação.  
+- Os caminhos percorridos formam uma árvore com raiz no vértice inicial, chamada árvore de busca em largura.
+
+Propriedades da Árvore de Busca em Largura
+- A árvore de busca em largura é uma árvore n-ária, mas com uma estrutura simplificada: cada nó tem apenas um pai (ancestral), então é possível armazenar apenas uma referência ao pai de cada nó.  
+- Isso resulta em uma estrutura de dados mais eficiente, implementada com um vetor de predecessores (vetor de roteamento), que indica qual vértice levou até o vértice atual.  
+- O vetor de roteamento é denotado por R(G). Por exemplo, se o vértice inicial é s, o vetor de roteamento teria valores como p(s) = nil, p(a) = s, e assim por diante.
+- Ver exemplo na página 55.
+
+Pseudocódigo da Busca em Largura (BFS)
+1. Inicialize todos os vértices como não visitados.  
+2. Insira o vértice inicial na fila e marque-o como visitado.  
+3. Enquanto a fila não estiver vazia, faça:
+   - Remova o vértice da frente da fila.
+   - Para cada vizinho não visitado do vértice atual, insira-o na fila e marque-o como visitado.
+   - Atualize o vetor de predecessores para indicar de onde o vértice foi alcançado.
+
+Busca-em-largura.c
+Busca-em-largura.py
+
+Busca em Profundidade (DFS - Depth First Search)  
+- Ao contrário da busca em largura, a busca em profundidade tenta explorar o grafo o máximo possível por cada caminho antes de retroceder.  
+- A busca visita um vizinho, depois o vizinho deste vizinho, e assim por diante, até que não haja mais opções. Quando isso acontece, ela volta e continua por outro caminho.  
+- O algoritmo é recursivo e gera uma árvore de busca em profundidade, que não garante os caminhos mais curtos como a busca em largura.
+
+Pseudocódigo da Busca em Profundidade (DFS)  
+1. Inicialize todos os vértices como não visitados.  
+2. Comece no vértice inicial e, recursivamente, visite todos os seus vizinhos ainda não visitados.  
+3. Marque o vértice como encerrado quando todos os seus vizinhos tiverem sido explorados.
+
+Busca-em-profundidade.c
+Busca-em-profundidade.py
+
+Exemplo de Aplicações  
+- Grafos de estados: Usados em Inteligência Artificial, modelam transições entre diferentes estados de um sistema. A busca em largura é utilizada para encontrar a solução com o menor número de transições de estado.
+- Ordenação Topológica: Em grafos acíclicos dirigidos, a busca em profundidade é usada para ordenar os vértices de forma linear, respeitando as dependências entre eles.
+s.
+
+Questão prática: detecção de ciclos com DFS
+Dado um grafo (não dirigido), detecte se ele contém um ciclo. Use DFS para visitar os vértices e acompanhar o percurso. Se durante a busca um vértice já visitado for encontrado, um ciclo foi detectado.
+
+Busca-em-profundidade-detecção-de-ciclo.c
+Busca-em-profundidade-detecção-de-ciclo.py
+Busca-em-profundidade-detecção-de-ciclo.hs
+
+Referência
+GOMES, Paulo C. R. Grafos. Conceitos Fundamentais, Algoritmos e Aplicações. IFC: Blumenau. 2022.
