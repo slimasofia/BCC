@@ -1,9 +1,0 @@
-Sofia Lima dos Santos
-
-CONEXIDADE
-A conexidade de um grafo trata das partes dele estarem ou não conectadas; os grafos podem ser desconectados em coponenes menores chamadados componentes conexos
-
-um grafo é conexo se para todos os pares de vértices existe um caminho que os conecta.
-grafo subjacente - transformação de um grafo dirigido em não dirigido ao remover a direção das arestas
-
-
