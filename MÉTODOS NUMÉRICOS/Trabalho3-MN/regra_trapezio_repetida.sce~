@@ -1,0 +1,42 @@
+// definindo f(x) = 3xe^2x
+deff('y=f(x)', 'y = 3*x*exp(2*x)')
+
+// limites
+a = 8
+b = 13
+
+// número de subintervalos
+n = 20
+
+// largura de cada subintervalo
+h = (b - a)/n 
+
+somatorio = 0
+for i = 1:(n-1)
+	xi = a + (i * h)
+	somatorio = somatorio + f(xi)
+end
+
+// segunda derivada de f(x)
+deff('y2=f2(x)', 'y2=12*exp(2*x)*(1 + x)')
+// vetor para armazenar os valores f2(xi)
+vetor = zeros(1, n + 1)
+
+// calculando todos os pontos na segunda derivada
+for i=1:(n+1)
+    xi = a + (i - 1) * h
+	valor = f2(xi)
+	vetor(i) = valor
+end
+
+// procurando o vaor máximo
+max_val = max(vetor)
+
+// calculando o erro 
+E = ((b - a)^3 / (12 * n^2)) * max_val
+
+// aplicando a Regra do Trapézio Repetida
+I = (h/2) * (f(a) + f(b) + 2 * somatorio)
+
+disp('A aproximação para a integral é: ', I)
+disp('Estimativa para o erro: ', E)
