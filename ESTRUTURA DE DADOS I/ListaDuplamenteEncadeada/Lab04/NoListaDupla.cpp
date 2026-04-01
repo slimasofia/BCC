@@ -8,25 +8,25 @@ NoListaDupla::NoListaDupla(std::string info) {
 }
 
 std::string NoListaDupla::getInfo() {
-
+    return this->info;
 }
 
 NoListaDupla* NoListaDupla::getAnt() {
-
+    return this->ant;
 }
 
 NoListaDupla* NoListaDupla::getProx() {
-
+    return this->prox;
 }
 
 void NoListaDupla::setInfo(std::string info) {
-
+    this->info = info;
 }
 
 void NoListaDupla::setAnt(NoListaDupla* ant) {
-
+    this->ant = ant;
 }
 
 void NoListaDupla::setProx(NoListaDupla* prox) {
-
+    this->prox = prox;
 }
