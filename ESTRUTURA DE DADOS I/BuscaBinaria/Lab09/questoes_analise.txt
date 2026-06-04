@@ -1,0 +1,26 @@
+1. Por que a busca binária exige que o vetor esteja ordenado?
+A busca binária funciona cortando o espaço de busca pela metade a cada iteração. 
+Para que ela possa descartar uma metade inteira do vetor, ela precisa ter a garantia de que todos os elementos 
+à esquerda do meio são menores do que ele, e todos à direita são maiores. Se o vetor estivesse desordenado, isso seria falso, 
+e o algoritmo descartaria partes do vetor onde o elemento procurado ainda poderia estar.  
+
+2. Em quais casos a busca linear em vetor ordenado pode parar antes de chegar ao final do vetor?
+Ela pode parar antes do final:
+    - Quando encontra o elemento procurado.
+    - Quando o elemento atual do vetor se torna estritamente maior do que o elemento procurado. 
+      Como o vetor está em ordem crescente, se chegamos em um número maior que o procurado, de nada adianta continuar olhando para a frente, 
+      já que todos os próximos números serão ainda maiores.  
+
+3. O que acontece com a quantidade de comparações da busca linear quando n aumenta?
+A quantidade de comparações cresce de forma diretamente proporcional ao tamanho do vetor. No pior caso (quando 
+o elemento não existe ou está na última posição), a busca linear precisa verificar todos os elementos. Portanto, se n aumenta de 
+10 para 100000, o número máximo de comparações vai de 10 para 100000.  
+
+4. O que acontece com a quantidade de comparações da busca binária quando n aumenta?
+A quantidade de comparações cresce de forma lenta (crescimento logarítmico). Como o algoritmo reduz o espaço de 
+busca pela metade a cada passo, dobrar o tamanho do vetor adiciona apenas uma comparação extra ao pior caso. Para um vetor de 
+100000 elementos, a busca binária fará, no máximo, 17 comparações, demonstrando um desempenho muito maior que a busca linear.  
+
+5. Para os testes realizados, a busca binária iterativa e a busca binária recursiva retornaram os mesmos índices? Explique.
+Sim, retornaram os mesmos índices. Isso acontece porque ambas implementam o mesmo algoritmo e a mesma lógica de divisão do vetor. 
+A única diferença entre elas é que a iterativa usa um laço while, enquanto a recursiva usa chamadas de função empilhadas na memória. O caminho percorrido nos dados é o mesmo. 
