@@ -1,0 +1,15 @@
+1. Por que a impressão simétrica mostra os valores em ordem crescente?
+Porque o percurso simétrico visita os nós na ordem esquerda → raiz → direita. Em uma árvore binária de busca, todos os valores da subárvore esquerda são menores que o valor da raiz e todos os 
+valores da subárvore direita são maiores ou iguais. Assim, os elementos são visitados em ordem crescente.
+
+2. Por que a busca em uma árvore binária de busca não precisa visitar todos os nós, em geral?
+Porque a propriedade de ordenação da árvore permite decidir a cada comparação, se a busca deve continuar apenas na subárvore esquerda ou apenas na subárvore direita. Assim, muitos nós são 
+descartados sem necessidade de visitação.
+
+3. O que pode acontecer com o desempenho da busca se a árvore ficar muito desbalanceada?
+Se a árvore ficar muito desbalanceada, ela pode se aproximar de uma lista encadeada. O desempenho das operações de busca, inserção e remoção piora de O(log n) para O(n), já que pode ser 
+necessário percorrer praticamente todos os nós.
+
+4. Qual foi o caso de remoção mais trabalhoso de implementar? Explique.
+A remoção de um nó com dois filhos foi o caso mais trabalhoso, porque é necessário encontrar um nó substituto, copiar seu valor para o nó removido e, em seguida, remover o nó 
+substituto da sua posição original.
