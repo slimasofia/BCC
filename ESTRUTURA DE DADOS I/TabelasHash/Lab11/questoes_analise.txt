@@ -1,0 +1,23 @@
+
+1. Qual é a função da operação hash em uma tabela hash?
+A função hash é como um mapa, ela recebe a chave de busca (como a matrícula) e a transforma em um número 
+inteiro dentro do intervalo de posições do vetor da tabela. 
+
+2. O que é uma colisão?
+Uma colisão ocorre quando a função hash processa duas ou mais chaves de busca diferentes e 
+gera exatamente o mesmo índice. Isso significa que os diferentes dados estão tentando ocupar a mesma posição.
+
+3. Como o encadeamento separado resolve colisões?
+Ele resolve a colisão transformando cada posição da tabela em um ponteiro para uma lista encadeada. 
+Assim, quando dois elementos caem no mesmo índice, ele apenas adiciona o novo elemento na lista encadeada daquela posição.
+
+4. Por que é recomendável usar um tamanho primo para a tabela?
+Porque o número primo ajuda a espalhar os dados de forma mais igualitária pela tabela. 
+Como ele não é múltiplo de outros números, ele "quebra" qualquer padrão numérico que as matrículas 
+possam ter (por exemplo, se muitas matrículas terminarem em zero ou forem pares). Assim, evitamos que 
+vários alunos caiam no mesmo índice, o que diminui as colisões.
+
+5. O que acontece com o desempenho das buscas se muitas chaves caírem na mesma posição da tabela?
+O desempenho da estrutura diminui. A principal vantagem da Tabela Hash é a busca em ordem constante O(1). 
+Se houver muitas colisões na mesma posição, o sistema precisa percorrer a lista encadeada sequencialmente, 
+podendo se aproximar do custo de busca linear, o que anula a eficiência inicial.
