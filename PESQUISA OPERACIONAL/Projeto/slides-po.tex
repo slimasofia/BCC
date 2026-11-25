@@ -1,0 +1,720 @@
+\documentclass[aspectratio=169, 10pt]{beamer}
+
+\usetheme[progressbar=frametitle, numbering=fraction, block=fill]{metropolis}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{lmodern}
+\usepackage{mathtools,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, positioning, backgrounds, calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ------------------------------------------------------------------
+% Cores (as mesmas do relatório)
+% ------------------------------------------------------------------
+\definecolor{tah}{RGB}{52,101,164}
+\definecolor{prop}{RGB}{46,125,50}
+\definecolor{vinho}{RGB}{136,14,79}
+\definecolor{cor1}{HTML}{4FB3A9}  % verde-água
+\definecolor{cor2}{HTML}{EF8A7B}  % coral
+\definecolor{cor3}{HTML}{E3B94F}  % mostarda
+\definecolor{cor4}{HTML}{A47DAB}  % ameixa
+\definecolor{escuro}{HTML}{2B3A42}
+
+\setbeamercolor{frametitle}{bg=escuro, fg=white}
+\setbeamercolor{progress bar}{fg=cor1, bg=cor1!20}
+\setbeamercolor{title separator}{fg=cor1}
+\setbeamercolor{alerted text}{fg=cor2!80!black}
+\setbeamercolor{block title}{bg=cor1!25, fg=escuro}
+\setbeamercolor{block body}{bg=cor1!8}
+\setbeamercolor{block title example}{bg=cor4!25, fg=escuro}
+\setbeamercolor{block body example}{bg=cor4!8}
+\setbeamertemplate{caption}[numbered]
+\setbeamerfont{caption}{size=\scriptsize}
+
+% Fonte das figuras (ABNT)
+\newcommand{\fonte}[1]{{\scriptsize Fonte: #1\par}}
+
+% Código
+\lstset{
+    language=C++,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{tah}\bfseries,
+    commentstyle=\color{prop}\itshape,
+    stringstyle=\color{cor3},
+    numbers=left, numberstyle=\tiny\color{gray}, numbersep=5pt,
+    frame=single, rulecolor=\color{gray!50},
+    breaklines=true, showstringspaces=false, columns=fullflexible,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+             {ã}{{\~a}}1 {õ}{{\~o}}1 {ç}{{\c{c}}}1 {ê}{{\^e}}1 {â}{{\^a}}1
+}
+
+% Estilos das figuras de rede
+\tikzset{
+  nd/.style={draw=cor1, fill=cor1!20, circle, minimum size=0.5cm, inner sep=0pt},
+  nal/.style={draw=gray, dashed, fill=white, circle, minimum size=0.46cm, inner sep=0pt},
+  hub/.style={draw=cor4, fill=cor4!25, regular polygon, regular polygon sides=3, minimum size=0.75cm, inner sep=0pt, line width=0.8pt},
+  link/.style={gray!55, line width=0.7pt},
+  harc/.style={black!60, line width=2.2pt},
+  leg/.style={font=\small, inner sep=1pt}}
+
+% Painel da figura de estratégias de alocação
+% #1 = deslocamento horizontal, #2 = título, #3 = alocações
+\newcommand{\painel}[3]{%
+  \begin{scope}[shift={(#1,0)}]
+    \node[hub, minimum size=0.68cm] (H1) at (0,0.95) {};
+    \node[hub, minimum size=0.68cm] (H2) at (-0.85,-0.45) {};
+    \node[hub, minimum size=0.68cm] (H3) at (0.85,-0.45) {};
+    \node[nd, minimum size=0.46cm] (a) at (-1.55,0.85) {};
+    \node[nd, minimum size=0.46cm] (b) at (1.55,0.85) {};
+    \node[nd, minimum size=0.46cm] (c) at (-1.6,-1.15) {};
+    \node[nd, minimum size=0.46cm] (d) at (0,-1.45) {};
+    \node[nd, minimum size=0.46cm] (e) at (1.6,-1.15) {};
+    \node[nal] (f) at (0,2.0) {};
+    \begin{scope}[on background layer]
+      \draw[link] #3;
+      \draw[harc] (H1)--(H2) (H2)--(H3);
+    \end{scope}
+    \node[font=\small] at (0,-2.2) {#2};
+  \end{scope}}
+
+% Estilo comum dos gráficos de tempo
+\pgfplotsset{
+  grafico tempo/.style={
+    width=\textwidth, height=4.6cm,
+    ylabel={Tempo de CPU (s)},
+    ylabel style={font=\scriptsize},
+    tick label style={font=\scriptsize},
+    xtick={1,...,12},
+    xticklabels={{150|0,8},{150|0,6},{150|0,4},{150|0,2},
+                  {100|0,8},{100|0,6},{100|0,4},{100|0,2},
+                  {50|0,8},{50|0,6},{50|0,4},{50|0,2}},
+    x tick label style={rotate=45, anchor=north east, font=\tiny},
+    xlabel={Custo do concentrador $|$ $\alpha$},
+    xlabel style={font=\scriptsize},
+    legend style={font=\scriptsize}}
+}
+
+% ------------------------------------------------------------------
+\title{Estratégias de alocação para o problema de localização de concentradores com maximização de lucro}
+\subtitle{Projeto da disciplina de Pesquisa Operacional}
+\author{Sofia Lima dos Santos}
+\institute{Instituto Federal Catarinense -- \textit{Campus} Blumenau}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+% ==================================================================
+\begin{frame}{Agenda}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+% ==================================================================
+\section{Introdução}
+% ==================================================================
+
+\begin{frame}{Problema de localização de concentradores}
+  \begin{columns}[T]
+    \begin{column}{0.44\textwidth}
+      \small
+      \begin{itemize}
+        \item Redes com muitos pares de origem e destino (O-D)
+        \item Os fluxos passam por \alert{concentradores}, em vez de ligações diretas
+        \item Consolidação $\Rightarrow$ \alert{economia de escala} entre concentradores
+        \item Desconto $\alpha \in [0,1]$: com $\alpha=0{,}2$, a transferência custa 20\% do valor original
+        \item Aplicações: transporte, logística, telecomunicações
+        \item Localização + alocação + roteamento $\Rightarrow$ NP-difícil
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \begin{figure}
+        \centering
+        \caption{Ligação direta e rede de concentradores}
+        \begin{tikzpicture}[scale=0.8, transform shape]
+          % ---- ponto a ponto ----
+          \begin{scope}[shift={(-2.9,0)}]
+            \node[nd] (a1) at (-1,1) {};
+            \node[nd] (a2) at (1,1) {};
+            \node[nd] (a3) at (1,-1) {};
+            \node[nd] (a4) at (-1,-1) {};
+            \draw[link] (a1)--(a2) (a1)--(a3) (a1)--(a4) (a2)--(a3) (a2)--(a4) (a3)--(a4);
+            \node[font=\small] at (0,-1.7) {Ligação direta};
+          \end{scope}
+          % ---- rede de concentradores ----
+          \begin{scope}[shift={(2.9,0)}]
+            \node[nd] (p1) at (-1.5,1) {};
+            \node[nd] (p2) at (-1.5,-1) {};
+            \node[nd] (p3) at (1.5,1) {};
+            \node[nd] (p4) at (1.5,-1) {};
+            \node[hub] (h1) at (-0.7,0) {};
+            \node[hub] (h2) at (0.7,0) {};
+            \draw[link] (p1)--(h1) (p2)--(h1) (p3)--(h2) (p4)--(h2);
+            \draw[harc] (h1)--(h2) node[midway, above=3pt, font=\small] {$\alpha$};
+            \node[font=\small] at (0,-1.7) {Rede de concentradores};
+          \end{scope}
+        \end{tikzpicture}
+
+        \vspace{0.2cm}
+        \begin{tikzpicture}[baseline, scale=0.8, transform shape,
+            leg/.style={font=\small, inner sep=1pt, text height=1.6ex, text depth=0.4ex}]
+          \node[nd, minimum size=0.4cm] (l1) at (0,0) {};
+          \node[leg, right=3pt of l1] (t1) {Nó};
+          \node[hub, minimum size=0.55cm, right=14pt of t1, yshift=-2pt] (l2) {};
+          \node[leg, anchor=west] (t2) at ([xshift=3pt]l2.east |- t1.west) {Concentrador};
+          \draw[harc] ([xshift=14pt]t2.east) -- ++(0.6,0) coordinate (e3);
+          \node[leg, right=3pt of e3] {Arco com desconto $\alpha$};
+        \end{tikzpicture}
+
+        \vspace{0.15cm}
+        \fonte{Elaborado pela autora (2026).}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Estratégias de alocação}
+  \small
+  \begin{itemize}
+    \item \textbf{Alocação única}: cada nó ligado a um único concentrador \hfill {\scriptsize (O'Kelly; Miller, 1994)}
+    \item \textbf{$r$-alocação}: no máximo $r$ concentradores por nó \hfill {\scriptsize (Yaman, 2011)}
+    \item \textbf{Alocação múltipla}: sem limite de concentradores por nó
+  \end{itemize}
+  \vspace{-0.2cm}
+  \begin{figure}
+    \centering
+    \caption{Exemplos com alocação única, $r$-alocação ($r=2$) e alocação múltipla}
+    \begin{tikzpicture}[scale=0.72, transform shape]
+      \painel{-4.7}{Alocação única}
+        {(a)--(H2) (b)--(H1) (c)--(H2) (d)--(H3) (e)--(H3)}
+      \painel{0}{$r$-alocação ($r=2$)}
+        {(a)--(H1) (a)--(H2) (b)--(H1) (c)--(H2) (d)--(H2) (d)--(H3) (e)--(H3)}
+      \painel{4.7}{Alocação múltipla}
+        {(a)--(H1) (a)--(H2) (b)--(H1) (b)--(H3) (c)--(H2) (d)--(H1) (d)--(H2) (d)--(H3) (e)--(H3)}
+    \end{tikzpicture}
+
+    \vspace{0.1cm}
+    \begin{tikzpicture}[baseline, scale=0.75, transform shape]
+      \node[nd, minimum size=0.4cm] (l1) at (0,0) {};
+      \node[leg, right=3pt of l1] (t1) {Nó};
+      \node[nal, minimum size=0.4cm, right=14pt of t1] (l2) {};
+      \node[leg, right=3pt of l2] (t2) {Nó não alocado};
+      \node[hub, minimum size=0.55cm, right=14pt of t2, yshift=1pt] (l3) {};
+      \node[leg, right=3pt of l3, yshift=-1pt] (t3) {Concentrador};
+      \draw[link] ($(t3.east)+(14pt,0)$) -- ++(0.6,0) coordinate (e1);
+      \node[leg, right=3pt of e1] (t4) {Alocação};
+      \draw[harc] ($(t4.east)+(14pt,0)$) -- ++(0.6,0) coordinate (e2);
+      \node[leg, right=3pt of e2] {Arco entre concentradores};
+    \end{tikzpicture}
+
+    \vspace{0.1cm}
+    \fonte{Elaborado pela autora (2026).}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{A perspectiva de maximização do lucro}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Modelos clássicos}
+        \begin{itemize}
+          \item Minimizam o custo total
+          \item Toda a demanda precisa ser atendida
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Maximização do lucro {\scriptsize(Alibeyg et al., 2016)}}
+        \begin{itemize}
+          \item Lucro $=$ receita $-$ custos
+          \item O modelo \alert{escolhe quais pares O-D atender}
+          \item Pares que dão prejuízo podem ser rejeitados
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.4cm}
+  \textbf{O problema estudado}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \small
+      \begin{itemize}
+        \item Até $r$ concentradores por nó
+        \item Não capacitado
+        \item Rede de concentradores incompleta
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \small
+      \begin{itemize}
+        \item Sem conexões diretas entre não concentradores
+        \item Atendimento parcial da demanda
+        \item Custos fixos de concentradores e de arcos
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==================================================================
+\section{Modelos matemáticos}
+% ==================================================================
+
+\begin{frame}{Parâmetros (comuns às duas formulações)}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \small
+      \begin{itemize}
+        \item $N=\{1,\dots,n\}$: conjunto de nós
+        \item $w_{ij}$: demanda de $i$ para $j$
+        \item $r_{ij}$: receita por unidade atendida
+        \item $O_i=\sum_j w_{ij}$: demanda originada em $i$
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \small
+      \begin{itemize}
+        \item $c_{ij}$: custo unitário de transporte
+        \item $s_k$: custo fixo de um concentrador em $k$
+        \item $g_{km}$: custo fixo do arco $(k,m)$
+        \item $\alpha$: fator de desconto entre concentradores
+        \item $r$: máximo de concentradores por nó
+      \end{itemize}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.5cm}
+  \begin{alertblock}{Duas formulações de PLIM}
+    \small
+    Topologia binária (abrir concentradores, alocar nós, ativar arcos) em ambas; a diferença está em como o \alert{roteamento} é representado. Resolvidas por \textit{branch-and-cut} no CPLEX.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Formulação proposta {\normalsize(baseada em Oliveira et al., 2022)}}
+  \begin{columns}[T]
+    \begin{column}{0.33\textwidth}
+      \footnotesize
+      \textbf{Variáveis}
+      \begin{itemize}
+        \item $a_{ik}$: fração da demanda de $i$ que entra na rede por $k$ \hfill\alert{(coleta)}
+        \item $b_{ijm}$: fração do par $(i,j)$ cujo último concentrador é $m$ \hfill\alert{(distribuição)}
+        \item $f_{ikm}$: fluxo de $i$ no arco $(k,m)$ \hfill\alert{(transferência)}
+        \item $x_{ik}\in\{0,1\}$: $i$ alocado a $k$ ($x_{kk}=1$: concentrador em $k$)
+        \item $z_{km}\in\{0,1\}$: arco $(k,m)$ ativo
+      \end{itemize}
+      \vspace{0.1cm}
+      Roteamento \alert{contínuo}, binárias só na topologia.
+    \end{column}
+    \begin{column}{0.65\textwidth}
+      \footnotesize
+      \begin{align*}
+        \max\; & \textstyle\sum_{ijm} r_{ij}w_{ij}b_{ijm} - \Big(\sum_{ik} c_{ik}O_ia_{ik} + \sum_{ijm} c_{mj}w_{ij}b_{ijm}\\[-2pt]
+        & \textstyle\quad + \sum_{ikm}\alpha c_{km}f_{ikm} + \sum_k s_kx_{kk} + \sum_{k\neq m} g_{km}z_{km}\Big)
+      \end{align*}
+      \vspace{-0.5cm}
+      \begin{align*}
+        & \textstyle\sum_k x_{ik} \le r, \quad x_{ik}\le x_{kk} && \text{alocação}\\
+        & \textstyle\sum_k a_{ik}\le 1, \quad \sum_m b_{ijm}\le 1 && \text{máx. 100\%}\\
+        & a_{ik}\le x_{ik}, \quad b_{ijm}\le x_{jm} && \text{via alocados}\\
+        & \textstyle\sum_{m\neq k} f_{imk} + O_ia_{ik} = \sum_{m\neq k} f_{ikm} + \sum_j w_{ij}b_{ijk} && \text{conservação}\\
+        & f_{ikm}\le O_iz_{km}, \quad z_{km}\le x_{kk},\; z_{km}\le x_{mm} && \text{arcos}\\
+        & a,b,f\ge 0, \quad x,z\in\{0,1\}
+      \end{align*}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Formulação de Taherkhani e Alumur (2019)}
+  \small
+  Mesmos parâmetros e variáveis $x$, $z$, $f$. O roteamento usa uma \alert{variável binária de caminho}:
+  \[
+    y_{ijkm} = 1 \iff \text{o par } (i,j) \text{ é roteado com } k \text{ como primeiro e } m \text{ como último concentrador}
+  \]
+  \vspace{-0.3cm}
+  \scriptsize
+  \begin{align*}
+    \max\; & \textstyle\sum_{ijkm} \big(r_{ij} - c_{ik} - c_{mj}\big)\,w_{ij}\,y_{ijkm} - \sum_{ikm}\alpha c_{km}f_{ikm} - \sum_k s_kx_{kk} - \sum_{k\neq m} g_{km}z_{km}\\
+    & \textstyle\sum_{k}\sum_m y_{ijkm}\le 1 && \text{no máximo um caminho por par}\\
+    & y_{ijkm}\le x_{ik}, \quad y_{ijkm}\le x_{jm} && \text{$2n^4$ restrições}\\
+    & \textstyle\sum_{m\neq k} f_{imk} + \sum_{jm} w_{ij}y_{ijkm} = \sum_{m\neq k} f_{ikm} + \sum_{jm} w_{ij}y_{ijmk} && \text{conservação de fluxo}
+  \end{align*}
+  \small
+  \vspace{-0.2cm}
+  Demais restrições (alocação e arcos) iguais às da formulação proposta. Como $y$ é binária, cada par é atendido \alert{integralmente ou não é atendido}.
+\end{frame}
+
+\begin{frame}{Comparação estrutural}
+  \begin{itemize}
+    \item Referência: \alert{uma variável binária de quatro índices} por caminho ($y_{ijkm}$)
+    \item Proposta: roteamento dividido em coleta ($a_{ik}$) e distribuição ($b_{ijm}$), \alert{contínuas}, com no máximo três índices
+  \end{itemize}
+
+  \begin{table}
+    \centering
+    \footnotesize
+    \caption{Tamanho das formulações (antes do pré-processamento)}
+    \begin{tabular}{lcrcr}
+      \toprule
+       & \multicolumn{2}{c}{Formulação proposta} & \multicolumn{2}{c}{Taherkhani e Alumur (2019)}\\
+       & Ordem & $n=25$ & Ordem & $n=25$\\
+      \midrule
+      Variáveis binárias & $2n^2-n$ & 1225 & $n^4+2n^2-n$ & 391850\\
+      Variáveis contínuas & $2n^3+n^2$ & 31875 & $n^3$ & 15625\\
+      Restrições & $2n^3+O(n^2)$ & 34375 & $2n^4+O(n^3)$ & 799350\\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+
+  \begin{center}
+    \small Referência: $\approx$ \alert{320$\times$ mais variáveis binárias} e \alert{23$\times$ mais restrições}
+  \end{center}
+\end{frame}
+
+% ==================================================================
+\section{Implementação}
+% ==================================================================
+
+\begin{frame}[fragile]{Implementação}
+  \begin{columns}[T]
+    \begin{column}{0.42\textwidth}
+      \small
+      \begin{itemize}
+        \item C++ com a API Concert do \textbf{IBM ILOG CPLEX 22.1.2}
+        \item \textit{Branch-and-cut} padrão do \textit{solver}
+        \item Gap relativo $10^{-7}$, limite de 6 h por instância
+        \item Código e instância: \\ {\scriptsize\texttt{github.com/slimasofia/hlp-formulations}}
+      \end{itemize}
+      \vspace{0.1cm}
+      {\scriptsize
+      \texttt{model.cpp}: variáveis e restrições\\
+      \texttt{main*.cpp}: CPLEX, pré-processamento e resultados}
+    \end{column}
+    \begin{column}{0.56\textwidth}
+      \centering
+      {\scriptsize Conservação de fluxo da formulação proposta}
+\begin{lstlisting}
+for (int i = 0; i < data.n; i++) {
+  for (int k = 0; k < data.n; k++) {
+    IloExpr entra(env), sai(env);
+    for (int m = 0; m < data.n; m++)
+      if (m != k) { entra += f[i][m][k]; sai += f[i][k][m]; }
+    entra += O[i] * a[i][k];             // coleta em k
+    for (int j = 0; j < data.n; j++)
+      sai += data.w[i][j] * b[i][j][k];  // distribuição
+    mod.add(entra == sai);
+    entra.end(); sai.end();
+  }
+}
+\end{lstlisting}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Dados e instâncias}
+  \small
+  Base \textbf{CAB} (\textit{Civil Aeronautics Board}): 25 cidades da rede aérea dos EUA (1970), com demandas normalizadas ($\sum w_{ij}=1$). Níveis de parâmetros de Taherkhani e Alumur (2019):
+
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{lll}
+      \toprule
+      Descrição & Parâmetro & Valores \\
+      \midrule
+      Receita por unidade de demanda & $r_{ij}$ & Baixa 1000 \quad Média 1500 \quad Alta 2000 \\
+      Custo de um concentrador & $s_k$ & Baixo 50 \quad Médio 100 \quad Alto 150 \\
+      Custo de um arco entre concentradores & $g_{km}$ & Baixo 5 \quad Médio 10 \quad Alto 15 \\
+      Fator de desconto & $\alpha$ & 0,2; 0,4; 0,6; 0,8 \\
+      Limite de alocações por nó & $r$ & 1; 2; 3; 25 \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+
+  \begin{center}
+    3 receitas $\times$ 3 níveis de custo $\times$ 4 valores de $\alpha$ $=$ \alert{36 instâncias por $r$}\\
+    $\times$ 4 valores de $r$ $=$ \alert{144 instâncias por formulação}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Pré-processamento e métricas}
+  \begin{block}{Fixação de variáveis não lucrativas}
+    \small
+    \begin{itemize}
+      \item Proposta: $b_{ijm}=0$ se $r_{ij} < c_{mj}$ \hfill (fixa 11\%, 24\% e 44\% de $b$)
+      \item Referência: $y_{ijkm}=0$ se $r_{ij} < c_{ik}+c_{mj}$ \hfill (fixa 48\%, 69\% e 87\% de $y$)
+      \item Não elimina soluções ótimas: os demais custos são não negativos
+    \end{itemize}
+    {\scriptsize Percentuais para receita alta, média e baixa.}
+  \end{block}
+
+  \begin{block}{Métricas registradas}
+    \small
+    \begin{itemize}
+      \item Lucro ótimo, concentradores instalados e tempo de CPU
+      \item Pares atendidos: fração dos $n(n-1)=600$ pares O-D que recebem fluxo
+    \end{itemize}
+  \end{block}
+
+  {\scriptsize Intel Core i7-8700, 16 GB de RAM, Linux Mint 22.2, 12 \textit{threads}. Tempo de CPU somado entre as \textit{threads}; limite de 6 h aplicado ao tempo de relógio.}
+\end{frame}
+
+% ==================================================================
+\section{Análise dos resultados}
+% ==================================================================
+
+\begin{frame}{Comparação entre as formulações}
+  \begin{table}
+    \centering
+    \footnotesize
+    \caption{Desempenho computacional (36 instâncias por valor de $r$)}
+    \begin{tabular}{crrrrrr}
+      \toprule
+       & \multicolumn{2}{c}{Tempo de CPU total (h)} & \multicolumn{3}{c}{\textit{Speedup}} & Proposta mais\\
+      $r$ & Taherkhani & Proposta & Média geom. & Mín. & Máx. & rápida em\\
+      \midrule
+      1 & 110,35 & 7,44 & \textbf{23,99} & 1,70 & 171,02 & 36/36 \\
+      2 & 209,12 & 10,57 & 16,30 & 0,41 & 2933,85 & 32/36 \\
+      3 & 170,70 & 6,01 & 17,57 & 0,50 & 522,38 & 32/36 \\
+      25 & 105,41 & 2,72 & 6,86 & 0,95 & 233,34 & 35/36 \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+
+  \small
+  \begin{itemize}
+    \item Mesmos valores ótimos nas 144 instâncias, em tempos muito menores
+    \item Instância mais demorada ($r=1$): \alert{82995 s $\to$ 1715 s} (redução de 97,93\%)
+    \item Referência mais rápida só em instâncias de receita baixa resolvidas por ambas em menos de 35 s
+    \item Motivo: sem as $n^4$ binárias de caminho, cada relaxação é menor e há muito menos variáveis para ramificar
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Tempo de CPU por instância ($r=1$, receita alta)}
+  \begin{figure}
+    \centering
+    \caption{Tempo de CPU das formulações na alocação única com receita alta: a vantagem se mantém em todas as configurações}
+    \begin{tikzpicture}
+      \begin{axis}[ymode=log, grafico tempo, height=5cm, legend pos=north west, legend cell align=left]
+        \addplot[color=cor2, mark=*, thick] coordinates {(1,13.33) (2,16.36) (3,260.24) (4,130.49) (5,23.36) (6,587.80) (7,318.02) (8,549.92) (9,2473.10) (10,4146.81) (11,9640.94) (12,1714.87)};
+        \addlegendentry{Formulação proposta}
+        \addplot[color=cor1, mark=square*, thick] coordinates {(1,2279.67) (2,2269.56) (3,9107.84) (4,4629.91) (5,2469.00) (6,11935.75) (7,9961.49) (8,11587.45) (9,43733.57) (10,76906.45) (11,49187.39) (12,82995.43)};
+        \addlegendentry{Taherkhani e Alumur (2019)}
+      \end{axis}
+    \end{tikzpicture}
+
+    \fonte{Elaborado pela autora (2026).}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Efeito da estratégia de alocação no lucro}
+  \small
+  Aumentar $r$ relaxa a restrição de alocação $\Rightarrow$ \alert{o lucro nunca diminui}.
+
+  \begin{table}
+    \centering
+    \footnotesize
+    \caption{O que muda a cada aumento de $r$ (36 instâncias)}
+    \begin{tabular}{lccc}
+      \toprule
+       & Instâncias com mais lucro & Maior ganho & Topologia mudou\\
+      \midrule
+      $r=1 \to r=2$ & 24 & \textbf{19\%} & 11 \\
+      $r=2 \to r=3$ & 7 & 1,2\% & 3 \\
+      $r=3 \to r=25$ & 0 & -- & 0 \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+
+  \begin{itemize}
+    \item Maiores ganhos com \alert{$\alpha$ alto}: a segunda alocação evita transferências caras
+    \item Ex.: receita alta, custos médios, $\alpha=0{,}6$: lucro 649,18 $\to$ 717,23; pares atendidos 66,67\% $\to$ 88,67\%; de 1 para 3 concentradores
+    \item $r=3$ já tem o mesmo lucro da alocação múltipla, logo $r\in\{4,\dots,24\}$ também
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Efeito da estratégia de alocação no tempo}
+  \begin{columns}[c]
+    \begin{column}{0.6\textwidth}
+      \begin{figure}
+        \centering
+        \caption{Tempo de CPU da formulação proposta, receita alta}
+        \begin{tikzpicture}
+          \begin{axis}[ymode=log, grafico tempo, ybar=0pt, bar width=2.4pt, enlarge x limits=0.06,
+              height=5.4cm, ymin=1, ymax=1e5,
+              legend style={at={(0.5,1.02)}, anchor=south, legend columns=4, draw=none}]
+            \addplot[fill=cor1, draw=none] coordinates {(1,13.33) (2,16.36) (3,260.24) (4,130.49) (5,23.36) (6,587.80) (7,318.02) (8,549.92) (9,2473.10) (10,4146.81) (11,9640.94) (12,1714.87)};
+            \addlegendentry{$r=1$}
+            \addplot[fill=cor2, draw=none] coordinates {(1,25.06) (2,42.76) (3,338.20) (4,156.56) (5,38.29) (6,271.75) (7,333.73) (8,621.53) (9,583.91) (10,2828.04) (11,18305.01) (12,1999.29)};
+            \addlegendentry{$r=2$}
+            \addplot[fill=cor3, draw=none] coordinates {(1,27.12) (2,40.88) (3,239.07) (4,130.88) (5,37.98) (6,256.71) (7,372.34) (8,480.50) (9,402.91) (10,1389.82) (11,10740.11) (12,1930.72)};
+            \addlegendentry{$r=3$}
+            \addplot[fill=cor4, draw=none] coordinates {(1,11.06) (2,19.40) (3,180.88) (4,128.70) (5,18.66) (6,206.88) (7,257.20) (8,404.14) (9,196.21) (10,855.25) (11,2016.23) (12,1230.47)};
+            \addlegendentry{$r=25$}
+          \end{axis}
+        \end{tikzpicture}
+
+        \fonte{Elaborado pela autora (2026).}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.38\textwidth}
+      \small
+      Tempo total das 36 instâncias:
+      \begin{center}
+        \begin{tabular}{cc}
+          \toprule
+          $r$ & Tempo (h)\\
+          \midrule
+          1 & 7,4\\
+          2 & \alert{10,6}\\
+          3 & 6,0\\
+          25 & \textbf{2,7}\\
+          \bottomrule
+        \end{tabular}
+      \end{center}
+      \scriptsize
+      \begin{itemize}
+        \item $r<n$: além de abrir concentradores, o \textit{solver} escolhe a quais cada nó se liga
+        \item $r=2$: mais combinações que $r=1$
+        \item $r=n$: cada nó usa qualquer concentrador aberto pelo caminho mais barato
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Efeito dos parâmetros econômicos}
+  \small
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{block}{Receita}
+        \scriptsize
+        Maior impacto no lucro e no atendimento.\\[3pt]
+        $r=1$, custos baixos, $\alpha=0{,}2$:\\
+        lucro 191,62 $\to$ 652,69 $\to$ 1149,28\\
+        pares 57\% $\to$ 93\% $\to$ 99,7\%\\[3pt]
+        Receita baixa e custos altos: só 16\% dos pares, via New York (nó 17).
+      \end{block}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{block}{Fator de desconto $\alpha$}
+        \scriptsize
+        $\alpha$ maior $=$ menos economia de escala: menos lucro, menos pares e redes mais concentradas.\\[3pt]
+        Receita alta, custos baixos ($r=1$):\\
+        lucro 1149,28 $\to$ 736,42\\
+        5 $\to$ 3 concentradores\\[3pt]
+        Regime em que a $r$-alocação mais ajuda.
+      \end{block}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{block}{Custos fixos}
+        \scriptsize
+        Custos maiores $\Rightarrow$ menos concentradores.\\[3pt]
+        Receita alta, $\alpha=0{,}2$ ($r=1$):\\
+        $\{4,7,12,14,17\} \to \{4,12,17\}$\\[3pt]
+        Com um único concentrador não há arcos de transferência, e $\alpha$ deixa de importar.
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.3cm}
+  \begin{alertblock}{Padrão de topologia ($r=1$)}
+    \scriptsize
+    Concentradores mais frequentes: New York (nó 17, 23 instâncias) e Chicago (nó 4, 18 instâncias), as origens de maior demanda. Em cenários menos favoráveis, a rede encolhe aos poucos:
+    $\{4,7,12,14,17\} \to \{4,12,17\} \to \{4,17\}$ ou $\{20\} \to \{17\}$.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Pares O-D atendidos}
+  \begin{figure}
+    \centering
+    \caption{Percentual de pares O-D atendidos na alocação única e na alocação múltipla}
+    \pgfplotsset{pares/.style={grafico tempo, width=0.47\textwidth, height=4.4cm,
+        ymin=0, ymax=110, ylabel={Pares atendidos (\%)},
+        grid=both, grid style={dashed, gray!30}}}
+    \begin{tikzpicture}
+      \begin{axis}[pares, name=ax1, title={\scriptsize Alocação única ($r=1$)},
+          legend to name=legpares, legend columns=3, legend style={draw=none}]
+        \addplot[color=cor1, mark=triangle*, thick] coordinates {(1,66.67) (2,66.67) (3,66.67) (4,96.33) (5,66.67) (6,66.67) (7,91.67) (8,96.33) (9,74.00) (10,85.00) (11,96.00) (12,99.67)};
+        \addlegendentry{Receita alta}
+        \addplot[color=cor3, mark=square*, thick] coordinates {(1,52.67) (2,52.67) (3,52.67) (4,62.00) (5,52.67) (6,52.67) (7,58.67) (8,81.00) (9,51.67) (10,55.67) (11,82.33) (12,93.33)};
+        \addlegendentry{Receita média}
+        \addplot[color=cor2, mark=*, thick] coordinates {(1,16.00) (2,16.00) (3,16.00) (4,16.00) (5,16.00) (6,16.00) (7,16.00) (8,36.00) (9,16.00) (10,27.33) (11,33.67) (12,57.33)};
+        \addlegendentry{Receita baixa}
+      \end{axis}
+      \begin{axis}[pares, at={($(ax1.east)+(0.6cm,0)$)}, anchor=west,
+          title={\scriptsize Alocação múltipla ($r=25$)}, ylabel={}]
+        \addplot[color=cor1, mark=triangle*, thick] coordinates {(1,66.67) (2,66.67) (3,92.67) (4,97.00) (5,79.00) (6,88.67) (7,92.67) (8,99.00) (9,86.67) (10,90.67) (11,97.00) (12,100.00)};
+        \addplot[color=cor3, mark=square*, thick] coordinates {(1,52.67) (2,52.67) (3,52.67) (4,63.00) (5,61.00) (6,61.33) (7,63.00) (8,83.00) (9,61.00) (10,68.33) (11,82.33) (12,94.00)};
+        \addplot[color=cor2, mark=*, thick] coordinates {(1,16.00) (2,16.00) (3,16.00) (4,16.00) (5,16.00) (6,16.00) (7,16.00) (8,36.00) (9,31.33) (10,33.33) (11,35.33) (12,58.67)};
+      \end{axis}
+    \end{tikzpicture}
+
+    \ref{legpares}
+
+    \fonte{Elaborado pela autora (2026).}
+  \end{figure}
+\end{frame}
+
+% ==================================================================
+\section{Conclusão}
+% ==================================================================
+
+\begin{frame}{Conclusão}
+  \small
+  \begin{block}{Formulação}
+    \scriptsize
+    Mesmos ótimos que a referência em tempos muito menores: \alert{24$\times$ mais rápida} (média geométrica) na alocação única e entre 7 e 18$\times$ nas demais estratégias, graças à troca das $n^4$ binárias de caminho por variáveis contínuas.
+  \end{block}
+  \begin{block}{Estratégia de alocação}
+    \scriptsize
+    Flexibilizar nunca reduz o lucro, mas \alert{$r=2$ captura quase todo o ganho} (até 19\%); $r=3$ já reproduz a alocação múltipla na base CAB. A alocação múltipla foi a mais rápida de resolver no total.
+  \end{block}
+  \begin{block}{Parâmetros}
+    \scriptsize
+    A receita é o principal fator de lucro e atendimento. $\alpha$ e custos fixos maiores levam a redes mais enxutas e à rejeição de pares pouco lucrativos. New York e Chicago são os concentradores mais recorrentes.
+  \end{block}
+  \vspace{0.1cm}
+  {\scriptsize\textbf{Limitações e trabalhos futuros:} uma única instância de 25 nós; algumas instâncias ainda levam horas, o que motiva métodos heurísticos para redes maiores.}
+\end{frame}
+
+\begin{frame}[standout]
+  Obrigada!\\[0.4cm]
+  {\normalsize Perguntas?}
+\end{frame}
+
+\begin{frame}{Referências}
+  \scriptsize
+  ALIBEYG, A.; CONTRERAS, I.; FERNÁNDEZ, E. Hub network design problems with profits. \textbf{Transportation Research Part E}, v. 96, p. 40--59, 2016.
+
+  \vspace{1pt}
+  ARENALES, M. et al. \textbf{Pesquisa Operacional}. Rio de Janeiro: Elsevier, 2007.
+
+  \vspace{1pt}
+  CAMPBELL, J. F.; O'KELLY, M. E. Twenty-five years of hub location research. \textbf{Transportation Science}, v. 46, n. 2, p. 153--169, 2012.
+
+  \vspace{1pt}
+  FARAHANI, R. Z. et al. Hub location problems: a review of models, classification, solution techniques, and applications. \textbf{Computers \& Industrial Engineering}, v. 64, n. 4, p. 1096--1109, 2013.
+
+  \vspace{1pt}
+  O'KELLY, M. E. A quadratic integer program for the location of interacting hub facilities. \textbf{European Journal of Operational Research}, v. 32, n. 3, p. 393--404, 1987.
+
+  \vspace{1pt}
+  O'KELLY, M. E.; MILLER, H. J. The hub network design problem. \textbf{Journal of Transport Geography}, v. 2, n. 1, p. 31--40, 1994.
+
+  \vspace{1pt}
+  OLIVEIRA, F. A.; SÁ, E. M. de; SOUZA, S. R. de. Benders decomposition applied to profit maximizing hub location problem with incomplete hub network. \textbf{Computers \& Operations Research}, v. 142, 105715, 2022.
+
+  \vspace{1pt}
+  TAHERKHANI, G.; ALUMUR, S. A. Profit maximizing hub location problems. \textbf{Omega}, v. 86, p. 1--15, 2019.
+
+  \vspace{1pt}
+  YAMAN, H. Allocation strategies in hub networks. \textbf{European Journal of Operational Research}, v. 211, n. 3, p. 442--451, 2011.
+\end{frame}
+
+\end{document}
